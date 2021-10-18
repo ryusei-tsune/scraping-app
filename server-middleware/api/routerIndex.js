@@ -19,49 +19,39 @@ router.get('/scraping', async (req, res, next) => {
         const result = document.getElementById('resultCards');
         const resultlist = result.children;
         Array.from(resultlist).forEach((book) => {
-            var eachBook = book.getElementsByClassName('c_searchCard_topWrap')[0];
-            var elements = eachBook.getElementsByClassName('informationArea')[0].children;
+            //var eachBook = book.getElementsByClassName('c_searchCard_topWrap')[0];
+            var elements = book.getElementsByClassName('informationArea')[0].children;
             var url = "";
             var bookName = ""
             var author = "";
             var publisher = "";
             var existing = "";
             Array.from(elements).forEach((element, index) => {
-                switch (index) {
-                    case 0:
-                        var book = element.getElementsByTagName('a')[0]
-                        url = book.getAttribute('href');
-                        bookName = book.innerText;
-                        break;
-                    case 1:
-                        var auth = element.getElementsByTagName('span');
-                        Array.from(auth).forEach((person) => {
-                            author = person.innerText;
-                        })
-                        break;
-                    case 2:
-                        publisher = element.getElementsByTagName('span')[0].innerText;
-                        break;
-                    case 5:
-                        existing = element.getElementsByTagName('span')[0].innerText;
-                        break;
-                    default:
-                        break;
-                };
+                if (index == 0) {
+                    var name = element.getElementsByTagName('a')[0]
+                    url = name.getAttribute('href');
+                    bookName = name.innerText;
+                }
+                else {
+                    var dTags = element.children;
+                    var dtName = dTags[0].innerText;
+                    if (dtName.includes("著者名")){
+                        author = dTags[1].getElementsByTagName('span')[0].innerText;
+                    }
+                    else if(dtName.includes("出版")){
+                        publisher = dTags[1].getElementsByTagName('span')[0].innerText;
+                    }
+                    else if (dtName.includes("状況")){
+                        existing = dTags[1].getElementsByTagName('span')[0].innerText;
+                    }
+                }
             });
-            datalist.push({URL: url, bookname: bookName, Author: author, Publisher: publisher, Existing: existing})
+            datalist.push({ URL: url, bookname: bookName, Author: author, Publisher: publisher, Existing: existing })
         });
-        // const resultlist = document.getElementsByTagName('span');
-        // Array.prototype.forEach.call(resultlist, (element) => {
-        //     if ((element.innerText == "在庫中") || (element.innerText.includes("貸出中"))) datalist.push(element.innerText);
-        // });
         return datalist;
     });
     console.log(resultArray);
-    // const resultSelectors = await page.$('body');
-    // const html = await page.evaluate(body => body.innerHTML, resultSelectors);
-    // console.log(html)
-    res.status(200).json({ ok: true, statusText: 'ok.', body: resultArray });
+    res.status(200).json(resultArray);
     await browser.close();
 })
 router.get('/matsumoto', async (req, res, next) => {

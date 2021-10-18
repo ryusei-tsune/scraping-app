@@ -2,19 +2,36 @@
   <v-container>
     <v-row dense>
       <v-col cols="12">
-        <v-card outlined>
-          <v-card-title>API TEST</v-card-title>
+        <v-card outlined color="blue lighten-5">
+          <v-card-title>Get Test</v-card-title>
           <v-card-text>
-            <v-btn color="primary" @click="request()">
-              リクエスト
-            </v-btn>
+            <v-btn color="primary" @click="request()"> リクエスト </v-btn>
           </v-card-text>
         </v-card>
       </v-col>
     </v-row>
-    <v-card-text>
-      {{ resData }}
-    </v-card-text>
+    <v-row>
+      <v-col
+        cols="6"
+        v-for="(item, index) in resData"
+        :key="`response-data-${index}`"
+      >
+        <v-card color="pink lighten-5">
+          <v-card-text>
+            {{ item.bookname }}
+          </v-card-text>
+          <v-card-text>
+            {{ item.Author }}
+          </v-card-text>
+          <v-card-text>
+            {{ item.Publisher }}
+          </v-card-text>
+          <v-card-text>
+            {{ item.Existing }}
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 <script>
@@ -48,12 +65,11 @@ export default {
   methods: {
     async request() {
       try {
-        console.log("a")
-        const {data} = await this.$axios.get("/api/scraping")
-        console.log("b")
-        if (!data.ok) throw new Error(data.statusText || "");
+        console.log("request");
+        const { data } = await this.$axios.get("/api/scraping");
+        //if (!data.ok) throw new Error(data.statusText || "");
         this.$set(this, "resData", data);
-        console.log("c")
+        cosole.log("complete");
       } catch (err) {
         console.log("Error");
       }
