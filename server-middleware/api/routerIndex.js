@@ -4,12 +4,12 @@ const router = express.Router();
 const axios = require('axios');
 const puppeteer = require('puppeteer');
 
-router.get('/scraping', async (req, res, next) => {
+router.post('/scraping', async (req, res, next) => {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
-    //var url = "https://webcat.lib.okayama-u.ac.jp/opac/volume/1293409?category-book=1&target=local"
-    //var url = "https://webcat.lib.okayama-u.ac.jp/opac/search?q=%E5%AB%8C%E3%82%8F%E3%82%8C%E3%82%8B%E5%8B%87%E6%B0%97"
-    var url = "https://webcat.lib.okayama-u.ac.jp/opac/search?q=Julia"
+    //var url = "https://webcat.lib.okayama-u.ac.jp/opac/search?q=Julia";
+    var url = "https://webcat.lib.okayama-u.ac.jp/opac/search?q=" + req.body.name;
+    console.log(url)
     await page.goto(url, {
         waitUntil: "networkidle0",
     });

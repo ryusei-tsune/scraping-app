@@ -4,6 +4,11 @@
       <v-col cols="12">
         <v-card outlined color="blue lighten-5">
           <v-card-title>Get Test</v-card-title>
+          <v-text-field
+            v-model="bookname"
+            outlined
+            placeholder="検索ワード"
+          ></v-text-field>
           <v-card-text>
             <v-btn color="primary" @click="request()"> リクエスト </v-btn>
           </v-card-text>
@@ -47,6 +52,7 @@ export default {
   data() {
     return {
       resData: null,
+      bookname: "",
     };
   },
   watch: {},
@@ -65,11 +71,15 @@ export default {
   methods: {
     async request() {
       try {
-        console.log("request");
-        const { data } = await this.$axios.get("/api/scraping");
-        //if (!data.ok) throw new Error(data.statusText || "");
-        this.$set(this, "resData", data);
-        cosole.log("complete");
+        if (this.bookname != "") {
+          console.log("request");
+          const { data } = await this.$axios.post("/api/scraping", {
+            name: this.bookname,
+          });
+          //if (!data.ok) throw new Error(data.statusText || "");
+          this.$set(this, "resData", data);
+          cosole.log("complete");
+        }
       } catch (err) {
         console.log("Error");
       }
