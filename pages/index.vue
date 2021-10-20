@@ -3,15 +3,17 @@
     <v-row dense>
       <v-col cols="12">
         <v-card outlined color="blue lighten-5">
-          <v-card-title>Get Test</v-card-title>
-          <v-text-field
+          <v-card-title style="font-size:45px;">Get Book Information</v-card-title>
+          <v-card-text style="font-size:25px;" class="pt-4">これは研究で蔵書情報を取得するために作られたアプリケーションです。</v-card-text>
+          <v-card-text style="font-size:25px;">このページ自体に意味はありません</v-card-text>
+          <!-- <v-text-field
             v-model="bookname"
             outlined
             placeholder="検索ワード"
           ></v-text-field>
           <v-card-text>
             <v-btn color="primary" @click="request()"> リクエスト </v-btn>
-          </v-card-text>
+          </v-card-text> -->
         </v-card>
       </v-col>
     </v-row>
