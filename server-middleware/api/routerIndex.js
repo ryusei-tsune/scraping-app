@@ -26,7 +26,7 @@ router.post('/scraping', async (req, res, next) => {
             var author = "";
             var publisher = "";
             var existing = "";
-            Array.from(elements).forEach((element) => {
+            Array.from(elements).forEach((element, index) => {
                 if (index == 0) {
                     var name = element.getElementsByTagName('a')[0]
                     url = name.getAttribute('href');
