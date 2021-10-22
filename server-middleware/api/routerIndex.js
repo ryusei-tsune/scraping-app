@@ -5,7 +5,7 @@ const axios = require('axios');
 const puppeteer = require('puppeteer');
 
 router.post('/scraping', async (req, res, next) => {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
     //var url = "https://webcat.lib.okayama-u.ac.jp/opac/search?q=Julia";
     var url = "https://webcat.lib.okayama-u.ac.jp/opac/search?q=" + req.body.name;
