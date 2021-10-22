@@ -18,7 +18,7 @@ router.post('/scraping', async (req, res, next) => {
         const datalist = [];
         const result = document.getElementById('resultCards');
         const resultlist = result.children;
-        Array.from(resultlist).forEach((book) => {
+        Array.from(resultlist).forEach((book, i) => {
             //var eachBook = book.getElementsByClassName('c_searchCard_topWrap')[0];
             var elements = book.getElementsByClassName('informationArea')[0].children;
             var url = "";
@@ -26,7 +26,7 @@ router.post('/scraping', async (req, res, next) => {
             var author = "";
             var publisher = "";
             var existing = "";
-            Array.from(elements).forEach((element, index) => {
+            Array.from(elements).forEach((element) => {
                 if (index == 0) {
                     var name = element.getElementsByTagName('a')[0]
                     url = name.getAttribute('href');
@@ -46,7 +46,7 @@ router.post('/scraping', async (req, res, next) => {
                     }
                 }
             });
-            datalist.push({ URL: url, bookname: bookName, Author: author, Publisher: publisher, Existing: existing })
+            datalist.push({ URL: url, Bookname: bookName, Author: author, Publisher: publisher, Existing: existing })
         });
         return datalist;
     });
