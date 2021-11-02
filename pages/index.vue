@@ -3,13 +3,38 @@
     <v-row dense>
       <v-col cols="12">
         <v-card outlined color="blue lighten-5">
-          <v-card-title style="font-size:45px;">Get Book Information</v-card-title>
-          <v-card-text style="font-size:25px;" class="pt-4">これは研究で蔵書情報を取得するために作られたアプリケーションです。</v-card-text>
-          <v-card-text style="font-size:25px;">このページ自体に意味はありません</v-card-text>
+          <v-card-title style="font-size: 45px"
+            >Get Book Information</v-card-title
+          >
+          <v-card-text style="font-size: 25px" class="pt-4"
+            >これは研究で蔵書情報を取得するために作られたアプリケーションです。</v-card-text
+          >
+          <v-card-text style="font-size: 25px"
+            >このページ自体に意味はありません。</v-card-text
+          >
+          <v-card-text style="font-size: 25px"
+            >取得情報を可視化した状態が下の画像になります．</v-card-text
+          >
+          <!-- <v-row>
+            <v-col cols="4">
+              <v-text-field
+                v-model="bookname"
+                outlined
+                placeholder="検索ワード"
+                class="pl-4"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-card-text>
+            <v-btn color="primary" @click="request()"> リクエスト </v-btn>
+          </v-card-text> -->
+        </v-card>
+        <v-card outlined class="pa-2" color="lime lighten-5">
+          <v-img src="/GetInformation.png" width="50%" />
         </v-card>
       </v-col>
     </v-row>
-    <v-row>
+    <!-- <v-row>
       <v-col
         cols="6"
         v-for="(item, index) in resData"
@@ -17,7 +42,7 @@
       >
         <v-card color="pink lighten-5">
           <v-card-text>
-            {{ item.bookname }}
+            {{ item.Bookname }}
           </v-card-text>
           <v-card-text>
             {{ item.Author }}
@@ -30,14 +55,14 @@
           </v-card-text>
         </v-card>
       </v-col>
-    </v-row>
+    </v-row> -->
   </v-container>
 </template>
 <script>
 export default {
   head() {
     return {
-      title: "Top Page",
+      title: "Scraping-app",
     };
   },
   layout: "default",
