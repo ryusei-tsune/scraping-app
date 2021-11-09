@@ -54,5 +54,45 @@ router.post('/scraping', async (req, res, next) => {
     res.status(200).json(resultArray);
     await browser.close();
 })
+router.post('/detail-information', async (req, res, next) => {
+    const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+    const page = await browser.newPage();
+    //var url = "https://webcat.lib.okayama-u.ac.jp/opac/search?q=Julia";
+    var url = "https://webcat.lib.okayama-u.ac.jp" + req.body.url;
+    console.log(url)
+    await page.goto(url, {
+        waitUntil: "networkidle0",
+    });
+    console.log("b")
+    var resultArray = await page.evaluate(() => {
+        const datalist = [];
+        var i = 0;
+        while (1){
+            const result = document.getElementById("lid_volume_td_0_st_" + i);
+            console.log("lid_volume_td_0_st_" + i);
+            if (!result){
+                break;
+            }
+            const existing = result.getElementsByTagName('p')[0].innerText;
+            if (existing == "在庫中"){
+                const floorResult = document.getElementById("lid_volume_td_0_lo_" + i);
+                const locationResult= document.getElementById("lid_volume_td_0_ca_" + i);
+                
+                const floor = floorResult.getElementsByTagName('a')[0].innerText;
+                const locations = locationResult.getElementsByTagName('li');//3つ値が存在
+                var location = ""
+                for (let j = 0; j < locations.length; j++){
+                    location += locations[j].innerText + "/" 
+                }
+                datalist.push({ Floor: floor, Location: location })
+            }
+            i++;
+        }
+        return datalist;
+    });
+    console.log(resultArray);
+    res.status(200).json(resultArray);
+    await browser.close();
+})
 
 module.exports = router
