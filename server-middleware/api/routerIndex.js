@@ -63,13 +63,11 @@ router.post('/detail-information', async (req, res, next) => {
     await page.goto(url, {
         waitUntil: "networkidle0",
     });
-    console.log("b")
-    var resultArray = await page.evaluate(() => {
+    var resultInfo = await page.evaluate(() => {
         const datalist = [];
         var i = 0;
         while (1){
             const result = document.getElementById("lid_volume_td_0_st_" + i);
-            console.log("lid_volume_td_0_st_" + i);
             if (!result){
                 break;
             }
@@ -90,8 +88,8 @@ router.post('/detail-information', async (req, res, next) => {
         }
         return datalist;
     });
-    console.log(resultArray);
-    res.status(200).json(resultArray);
+    console.log(resultInfo[0]);
+    res.status(200).json(resultInfo[0]);
     await browser.close();
 })
 
