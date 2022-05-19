@@ -19,7 +19,7 @@
     "morgan": "^1.10.0",
     "nuxt": "^2.15.7",
     "pg": "^8.7.1",
-    "puppeteer": "^10.4.0",
+    "puppeteer": "^14.1.0",
     "vuetify": "^2.5.5"
   },
   "devDependencies": {
