@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <Test color="green"></Test>
     <v-row dense>
       <v-col cols="12">
         <v-card outlined color="blue lighten-5">
@@ -15,58 +16,28 @@
           <v-card-text style="font-size: 25px"
             >取得情報を可視化した状態が下の画像になります．</v-card-text
           >
-          <!-- <v-row>
-            <v-col cols="4">
-              <v-text-field
-                v-model="bookname"
-                outlined
-                placeholder="検索ワード"
-                class="pl-4"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-card-text>
-            <v-btn color="primary" @click="request()"> リクエスト </v-btn>
-          </v-card-text> -->
         </v-card>
         <v-card outlined class="pa-2" color="lime lighten-5">
           <v-img src="/GetInformation.png" width="50%" />
         </v-card>
       </v-col>
     </v-row>
-    <!-- <v-row>
-      <v-col
-        cols="6"
-        v-for="(item, index) in resData"
-        :key="`response-data-${index}`"
-      >
-        <v-card color="pink lighten-5">
-          <v-card-text>
-            {{ item.Bookname }}
-          </v-card-text>
-          <v-card-text>
-            {{ item.Author }}
-          </v-card-text>
-          <v-card-text>
-            {{ item.Publisher }}
-          </v-card-text>
-          <v-card-text>
-            {{ item.Existing }}
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row> -->
   </v-container>
 </template>
 <script>
+import Test from '~/components/test.vue'
 export default {
   head() {
     return {
       title: "Scraping-app",
     };
   },
+  props: {
+  },
   layout: "default",
-  components: {},
+  components: {
+    Test,
+  },
   middleware: [],
   data() {
     return {
@@ -76,10 +47,8 @@ export default {
   },
   watch: {},
   computed: {
-    csv() {
-      if (!this.resData?.body) return [];
-      return this.resData.body;
-    },
+    // CSS変数を定義して、CSS側に渡したいVueコンポーネントの値を指定する
+    // ※今回はpropsで受け取った値
   },
   created() {},
   beforeMount() {},
