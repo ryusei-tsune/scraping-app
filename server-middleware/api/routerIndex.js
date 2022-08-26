@@ -46,7 +46,7 @@ router.post('/scraping', async (req, res, next) => {
                     }
                 }
             });
-            datalist.push({ URL: url, Bookname: bookName, Author: author, Publisher: publisher, Existing: existing })
+            datalist.push({ url: url, name: bookName, author: author, publisher: publisher, existing: existing })
         });
         return datalist;
     });
