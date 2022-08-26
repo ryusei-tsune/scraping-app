@@ -7,46 +7,50 @@ const puppeteer = require('puppeteer');
 router.post('/scraping', async (req, res, next) => {
     const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
-    //var url = "https://webcat.lib.okayama-u.ac.jp/opac/search?q=Julia";
-    var url = "https://webcat.lib.okayama-u.ac.jp/opac/search?q=" + req.body.name;
+    //let url = "https://webcat.lib.okayama-u.ac.jp/opac/search?q=Julia";
+    let url = "https://webcat.lib.okayama-u.ac.jp/opac/search?q=" + req.body.name;
     console.log(url)
     await page.goto(url, {
         waitUntil: "networkidle0",
     });
 
-    var resultArray = await page.evaluate(() => {
+    let resultArray = await page.evaluate(() => {
         const datalist = [];
         const result = document.getElementById('resultCards');
         const resultlist = result.children;
         Array.from(resultlist).forEach((book) => {
-            //var eachBook = book.getElementsByClassName('c_searchCard_topWrap')[0];
-            var elements = book.getElementsByClassName('informationArea')[0].children;
-            var url = "";
-            var bookName = ""
-            var author = "";
-            var publisher = "";
-            var existing = "";
+            //let eachBook = book.getElementsByClassName('c_searchCard_topWrap')[0];
+            let elements = book.getElementsByClassName('informationArea')[0].children;
+            let url = "";
+            let bookName = ""
+            let author = "";
+            let publisher = "";
+            let position = ""
+            let existing = "";
             Array.from(elements).forEach((element, index) => {
                 if (index == 0) {
-                    var name = element.getElementsByTagName('a')[0]
+                    let name = element.getElementsByTagName('a')[0]
                     url = name.getAttribute('href');
                     bookName = name.innerText;
                 }
                 else {
-                    var dTags = element.children;
-                    var dtName = dTags[0].innerText;
+                    let dTags = element.children;
+                    let dtName = dTags[0].innerText;
                     if (dtName.includes("著者名")) {
                         author = dTags[1].getElementsByTagName('span')[0].innerText;
                     }
                     else if (dtName.includes("出版")) {
                         publisher = dTags[1].getElementsByTagName('span')[0].innerText;
                     }
+                    else if (dtName.includes("所蔵")) {
+                        position = dTags[1].getElementsByTagName('span')[0].innerText;
+                    }
                     else if (dtName.includes("状況")) {
                         existing = dTags[1].getElementsByTagName('span')[0].innerText;
                     }
                 }
             });
-            datalist.push({ url: url, name: bookName, author: author, publisher: publisher, existing: existing })
+            datalist.push({ url: url, name: bookName, author: author, publisher: publisher, position: position, existing: existing })
         });
         return datalist;
     });
@@ -57,15 +61,15 @@ router.post('/scraping', async (req, res, next) => {
 router.post('/detail-information', async (req, res, next) => {
     const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
-    //var url = "https://webcat.lib.okayama-u.ac.jp/opac/search?q=Julia";
-    var url = "https://webcat.lib.okayama-u.ac.jp" + req.body.url;
+    //let url = "https://webcat.lib.okayama-u.ac.jp/opac/search?q=Julia";
+    let url = "https://webcat.lib.okayama-u.ac.jp" + req.body.url;
     console.log(url)
     await page.goto(url, {
         waitUntil: "networkidle0",
     });
-    var resultInfo = await page.evaluate(() => {
+    let resultInfo = await page.evaluate(() => {
         const datalist = [];
-        var i = 0;
+        let i = 0;
         while (1) {
             const result = document.getElementById("lid_volume_td_0_st_" + i);
             if (!result) {
@@ -78,7 +82,7 @@ router.post('/detail-information', async (req, res, next) => {
 
                 const floor = floorResult.getElementsByTagName('a')[0].innerText;
                 const locations = locationResult.getElementsByTagName('li');//3つ値が存在
-                var location = ""
+                let location = ""
                 for (let j = 0; j < locations.length; j++) {
                     location += locations[j].innerText + "/"
                 }
